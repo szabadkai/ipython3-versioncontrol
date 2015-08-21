@@ -61,7 +61,7 @@ def get_notebook_data(path_to_file):
 
 def construct_output_py_file_path(input_file_path, skip_if_exists=True):
     input_headless, ext = os.path.splitext(input_file_path)
-    assert ext=='.ipynb'
+    assert ext=='.ipynb',  ext+" is not .ipynb"
     output_by_path = input_headless + '.py'
     if os.path.exists(output_by_path) and skip_if_exists:
         return
@@ -69,7 +69,7 @@ def construct_output_py_file_path(input_file_path, skip_if_exists=True):
 
 def write_notebook_data_to_py(notebook_data, out_file_path):
     with open(out_file_path, 'w') as output:
-        output.write('# -*- coding: utf-8 -*-\n')
+        output.write('# -*- coding: utf-8 -*ő-\n')
         output.write('# <nbformat>' + str(notebook_data['nbformat']) + '</nbformat>\n')
         try:
             cells = notebook_data['cells']
