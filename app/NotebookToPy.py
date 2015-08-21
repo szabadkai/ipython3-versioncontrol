@@ -1,12 +1,21 @@
-import sys
 import json
 import os
 import fnmatch
-from enum import Enum
 
 
 class PyGenerator(object):
-    THIS_FILE = os.path.abspath(__file__)
+
+    def convert_all_notebook_to_py(self, directory, overwrite=False):
+        for root, dirnames, filenames in os.walk(directory):
+            for filename in fnmatch.filter(filenames, '*.ipynb'):
+                filename = os.path.abspath(os.path.join(root, filename))
+                self.convert_notebook_to_py(filename, overwrite)
+
+    def convert_notebook_to_py(self, input_file_path, overwrite=False):
+        output_file_path = self.construct_output_path(input_file_path)
+        if not os.path.exists(output_file_path) or overwrite:
+            notebook_data = self.read_notebook(input_file_path)
+            self.write_notebook_data_to_py(notebook_data, output_file_path)
 
     def write_notebook_data_to_py(self, notebook_data, out_file_path):
         assert isinstance(notebook_data, dict)
@@ -63,9 +72,10 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--file', help='Specify an Ipython notebook if you only want to convert one. '
                                        '(This will overwrite default.)')
     args = parser.parse_args()
+    pg = PyGenerator()
 
     if args.file is not None:
-        convert_notebook_to_py(args.file, skip_if_exists=not args.overwrite)
+        pg.convert_notebook_to_py(args.file, overwrite=args.overwrite)
     else:
-        convert_all_notebook_to_py(directory='.', skip_if_exists=not args.overwrite)
+        pg.convert_all_notebook_to_py(directory='.', overwrite=args.overwrite)
 
