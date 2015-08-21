@@ -69,7 +69,7 @@ def construct_output_py_file_path(input_file_path, skip_if_exists=True):
 
 def write_notebook_data_to_py(notebook_data, out_file_path):
     with open(out_file_path, 'w') as output:
-        output.write('# -*- coding: utf-8 -*ő-\n')
+        output.write('# -*- coding: utf-8 -*-\n')
         output.write('# <nbformat>' + str(notebook_data['nbformat']) + '</nbformat>\n')
         try:
             cells = notebook_data['cells']
