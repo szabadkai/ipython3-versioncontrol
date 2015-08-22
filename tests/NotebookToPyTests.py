@@ -20,17 +20,19 @@ class NotebookToPyTests(unittest.TestCase):
     def test_cell_object(self):
         test_dict = {"cell_type":"code", "source":"lkjashdkjahfslkdjlhfas"}
         cell = Cell(test_dict)
-        assert cell.cell_type == "code"
+        assert cell.cell_type == "code" and cell.source == "lkjashdkjahfslkdjlhfas"
 
     def test_empty_cel(self):
         test_dict = {}
-        self.assertRaises(KeyError, Cell, test_dict
+        self.assertRaises(KeyError, Cell, test_dict)
 
     def test_write_header(self):
+        if os.path.exists("testfile"):
+            os.remove("testfile")
         with open("testfile", 'w') as output:
             PyGenerator.add_header(output, str(4))
         assert os.path.exists("testfile")
-
+        os.remove("testfile")
 
 if __name__ == '__main__':
     unittest.main()
