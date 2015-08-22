@@ -14,22 +14,25 @@ class Formater():
 
 class ToNotebook(Formater):
     def output(self, notebook, out_path, dry_run=False):
-        output = create_initial_output(notebook)
-            output['cells'] = build_notebook_cells(notebook)
-            if not dry_run:
-                write_py_data_to_notebook(output, out_path)
-            print "Created Ipython Jupyter notebook file: {}".format(out_path)
+        output = self.create_initial_output(notebook)
+        output['cells'] = self.build_notebook_cells(notebook)
+        if not dry_run:
+            self.write_py_data_to_notebook(output, out_path)
+        print "Created Ipython Jupyter notebook file: {}".format(out_path)
 
+    @staticmethod
     def build_notebook_cells(notebook):
         cells = []
         for cell in notebook.cells:
             cells.append({"cell_type":cell.cell_type, "source":cell.source})
         return cells
 
+    @staticmethod
     def write_py_data_to_notebook(output, out_file_path):
         with open(out_file_path, 'w') as outfile:
             json.dump(output, outfile)
 
+    @staticmethod
     def create_initial_output(notebook):
         assert isinstance(notebook, Notebook)
         kernelspec = {'display_name': 'Python 2',
@@ -46,10 +49,9 @@ class ToNotebook(Formater):
                     'language_info': language_info}
         nbformat_minor = 0
         nbformat = notebook.notebook_format
-        output = {'metadata': metadata,
+        return {'metadata': metadata,
                   'nbformat': nbformat,
                   'nbformat_minor': nbformat_minor}
-        return output
 
 
 class ToPy(Formater):

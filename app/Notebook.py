@@ -20,6 +20,7 @@ class Notebook(object):
                 cell_type = "markdown" if line == '# <markdowncell>\n' else 'code'
                 cell = Cell({"cell_type": cell_type, "source": []})
                 while not (line == '# <markdowncell>\n' or line == '# <codecell>\n'):
+                    line = file_handle.readline()
                     if cell.cell_type == "markdown":
                         source_line = line[2:] if len(line) > 2 else line
                         cell.source.append(source_line)
@@ -28,7 +29,8 @@ class Notebook(object):
                 else:
                     self.cells.append(cell)
                     file_handle.seek(file_handle.tell() - 1)
-
+            else:
+                print(line)
 
 class Cell(object):
     def __init__(self, cell):
