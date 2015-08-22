@@ -1,17 +1,17 @@
 import unittest
-import os
-from app.NotebookToPy import PyGenerator, Cell
+from app.NotebookToPy import PyGenerator, Cell, Notebook
 
 
 class NotebookToPyTests(unittest.TestCase):
     pyGenerator = PyGenerator()
+    nb = Notebook()
 
     def test_read_notebook_method(self):
-        notebook = self.pyGenerator.read_notebook("test.ipynb")
-        assert len(notebook)>0
+        self.nb.read_notebook("test.ipynb")
+        assert len(self.nb.cells) > 0
 
     def test_unavailable_file_loading(self):
-        self.assertRaises(IOError, self.pyGenerator.read_notebook, "")
+        self.assertRaises(IOError, self.nb.read_notebook, "")
 
     def test_file_path_construction(self):
         output_path = self.pyGenerator.construct_output_path("test.ipynb");
@@ -26,13 +26,17 @@ class NotebookToPyTests(unittest.TestCase):
         test_dict = {}
         self.assertRaises(KeyError, Cell, test_dict)
 
-    def test_write_header(self):
-        if os.path.exists("testfile"):
-            os.remove("testfile")
-        with open("testfile", 'w') as output:
-            PyGenerator.add_header(output, str(4))
-        assert os.path.exists("testfile")
-        os.remove("testfile")
+    def test_read_py(self):
+        self.nb = Notebook()
+        with open("test.py", 'r') as input:
+            self.nb.read_cells_from_py(input)
+        test_nb = Notebook()
+        test_nb.read_notebook("test.ipynb")
+        assert len(self.nb.cells) == len(test_nb.cells)
+        for i in range(len(self.nb.cells)):
+            assert self.nb.cells[i].cell_type == test_nb.cells[i].cell_type
+
+
 
 if __name__ == '__main__':
     unittest.main()

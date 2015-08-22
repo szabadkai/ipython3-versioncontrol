@@ -1,6 +1,7 @@
-import json
 import os
 import fnmatch
+from Notebook import Notebook
+from Formater import ToPy
 
 
 class PyGenerator(object):
@@ -11,59 +12,17 @@ class PyGenerator(object):
                 self.convert_notebook_to_py(filename, overwrite)
 
     def convert_notebook_to_py(self, input_file_path, overwrite=False):
-        output_file_path = self.construct_output_path(input_file_path)
+        output_file_path = self.construct_output_path_for_py(input_file_path)
         if not os.path.exists(output_file_path) or overwrite:
             nb = Notebook()
             nb.read_notebook(input_file_path)
-            self.write_notebook_to_py(nb, output_file_path)
-
-    def write_notebook_to_py(self, notebook, out_file_path):
-        assert isinstance(notebook, Notebook)
-        with open(out_file_path, 'w') as output:
-            self.add_header(output, str(notebook.notebook_format))
-            for cell in notebook.cells:
-                output.write(cell.generate_field_output())
+            fm = ToPy()
+            fm.output(nb, output_file_path)
 
     @staticmethod
-    def add_header(output, notebook_format):
-        assert isinstance(output, file)
-        assert isinstance(notebook_format, str)
-        output.write('# -*- coding: utf-8 -*-\n')
-        output.write('# <nbformat>' + notebook_format + '</nbformat>\n')
-
-    @staticmethod
-    def construct_output_path(input_path):
+    def construct_output_path_for_py(input_path):
         input_headless, ext = os.path.splitext(input_path)
         return input_headless + ".py"
-
-
-class Notebook(object):
-    notebook_format = int()
-    cells = []
-
-    def read_notebook(self, path_to_file):
-        with open(path_to_file, 'r') as notebook:
-            notebook_data = json.load(notebook)
-        self.notebook_format = notebook_data["nbformat"]
-        assert "cells" in notebook_data.keys(), "Nbformat is " + str(notebook_data['nbformat']) \
-                                                + ", try the old converter script."
-        for cell in notebook_data["cells"]:
-            self.cells.append(Cell(cell))
-
-
-class Cell(object):
-    def __init__(self, cell):
-        self.cell_type = cell['cell_type']
-        self.source = cell["source"]
-
-    def generate_field_output(self):
-        output = '\n# <' + self.cell_type + 'cell' + '>\n\n'
-        for item in self.source:
-            if self.cell_type == "code":
-                output += item
-            else:
-                output += "#" + item
-        return output + "\n"
 
 
 if __name__ == '__main__':
