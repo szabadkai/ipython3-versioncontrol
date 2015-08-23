@@ -14,18 +14,11 @@ class Formater():
 
 class ToNotebook(Formater):
     def output(self, notebook, out_path, dry_run=False):
-        output = self.create_initial_output(notebook)
-        output['cells'] = self.build_notebook_cells(notebook)
+        output =
+        output['cells'] = notebook.cells_to_dict()
         if not dry_run:
             self.write_py_data_to_notebook(output, out_path)
         print "Created Ipython Jupyter notebook file: {}".format(out_path)
-
-    @staticmethod
-    def build_notebook_cells(notebook):
-        cells = []
-        for cell in notebook.cells:
-            cells.append({"cell_type":cell.cell_type, "source":cell.source})
-        return cells
 
     @staticmethod
     def write_py_data_to_notebook(output, out_file_path):
@@ -35,23 +28,9 @@ class ToNotebook(Formater):
     @staticmethod
     def create_initial_output(notebook):
         assert isinstance(notebook, Notebook)
-        kernelspec = {'display_name': 'Python 2',
-                      'language': 'python',
-                      'name': 'python2'}
-        language_info = {'codemirror_mode': {'name': 'ipython', 'version': 2},
-                         'file_extension': '.py',
-                         'mimetype': 'text/x-python',
-                         'name': 'python',
-                         'nbconvert_exporter': 'python',
-                         'pygments_lexer': 'ipython2',
-                         'version': '2.7.10'}
-        metadata = {'kernelspec': kernelspec,
-                    'language_info': language_info}
-        nbformat_minor = 0
-        nbformat = notebook.notebook_format
-        return {'metadata': metadata,
-                  'nbformat': nbformat,
-                  'nbformat_minor': nbformat_minor}
+        return {'metadata': notebook.metadata,
+                  'nbformat': notebook.nbformat,
+                  'nbformat_minor': notebook.nbformat_minor}
 
 
 class ToPy(Formater):
