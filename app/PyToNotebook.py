@@ -4,7 +4,7 @@ from Notebook import Notebook
 from Formater import ToNotebook
 
 
-class NbGenerator(object):
+class PyToNotebook(object):
     def convert_all_py_to_notebook(self, directory, overwrite=False, dry_run=False):
         for root, dirnames, filenames in os.walk(directory):
             for filename in fnmatch.filter(filenames, '*.py'):
@@ -34,7 +34,7 @@ if __name__ == '__main__':
                                        '(This will overwrite default.)')
     parser.add_argument('--dry-run', action='store_true', help='Only prints what would happen', default=False)
     args = parser.parse_args()
-    ng = NbGenerator()
+    ng = PyToNotebook()
 
     if args.file is not None:
         ng.convert_py_to_notebook(args.file, overwrite=args.overwrite, dry_run=args.dry_run)

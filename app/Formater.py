@@ -1,6 +1,5 @@
 import abc
 import json
-from Notebook import Notebook,Cell
 
 
 class Formater():

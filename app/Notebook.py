@@ -62,12 +62,13 @@ class Notebook(object):
                 current_cell = 'markdown'
             elif '<codecell>' in line:
                 cell = {'cell_type': 'code',
-                       'execution_count': execution_count,
+                        'execution_count': execution_count,
                         'metadata': {'collapsed': False},
                         'outputs': []}
                 source = []
                 current_cell = 'code'
             return cell, source, current_cell
+
         current_cell = 'unknown'
         execution_count = 1
         skip_one_line = False
@@ -81,20 +82,20 @@ class Notebook(object):
                     skip_one_line = False
                     continue
 
-                if line=='# <markdowncell>\n' or line=='# <codecell>\n':
+                if line == '# <markdowncell>\n' or line == '# <codecell>\n':
                     outputcells = close_cell(current_cell)
-                    if current_cell=='code':
+                    if current_cell == 'code':
                         execution_count += 1
                     cell, source, current_cell = open_cell(line, execution_count)
                     skip_one_line = True
                     continue
 
-                if current_cell=='markdown':
+                if current_cell == 'markdown':
                     if len(line) > 1:
                         source.append(line[2:])
                     else:
                         source.append(line)
-                elif current_cell=='code':
+                elif current_cell == 'code':
                     source.append(line)
 
             last_cell = True
@@ -103,13 +104,14 @@ class Notebook(object):
                 self.cells.append(Cell(cell))
 
     def to_dict(self):
-        cells = {   'metadata': self.metadata,
-                    'nbformat': self.nbformat,
-                    'nbformat_minor': self.nbformat_minor,
-                    'cells':[]}
+        cells = {'metadata': self.metadata,
+                 'nbformat': self.notebook_format,
+                 'nbformat_minor': self.nbformat_minor,
+                 'cells': []}
         for cell in self.cells:
             cells['cells'].append(cell.to_dict())
         return cells
+
 
 class Cell(object):
     def __init__(self, cell):
@@ -126,4 +128,4 @@ class Cell(object):
         return output + "\n"
 
     def to_dict(self):
-        return {'cell_type':self.cell_type, 'source': self.source}
+        return {'cell_type': self.cell_type, 'source': self.source}

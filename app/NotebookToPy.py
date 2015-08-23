@@ -1,10 +1,10 @@
 import os
 import fnmatch
 from Notebook import Notebook
-from Formater import ToPy,ToNotebook
+from Formater import ToPy
 
 
-class PyGenerator(object):
+class NotebookToPy(object):
     def convert_all_notebook_to_py(self, directory, overwrite=False):
         for root, dirnames, filenames in os.walk(directory):
             for filename in fnmatch.filter(filenames, '*.ipynb'):
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--file', help='Specify an Ipython notebook if you only want to convert one. '
                                              '(This will overwrite default.)')
     args = parser.parse_args()
-    pg = PyGenerator()
+    pg = NotebookToPy()
 
     if args.file is not None:
         pg.convert_notebook_to_py(args.file, overwrite=args.overwrite)

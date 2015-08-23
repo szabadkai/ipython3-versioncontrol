@@ -1,11 +1,11 @@
 import unittest
-from app.NotebookToPy import NotebookToPy
+from app.PyToNotebook import PyToNotebook
 
 
 class NotebookToPyTests(unittest.TestCase):
     def test_object_generation(self):
-        nb2py = NotebookToPy()
-        self.assertIsInstance(nb2py, NotebookToPy)
+        py2nb = PyToNotebook()
+        self.assertIsInstance(py2nb, PyToNotebook)
 
 
 if __name__ == '__main__':
