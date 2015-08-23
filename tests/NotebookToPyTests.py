@@ -1,41 +1,66 @@
 import unittest
-from app.NotebookToPy import PyGenerator, Cell, Notebook
+from app.NotebookToPy import PyGenerator
+from app.Notebook import Cell, Notebook
 
 
 class NotebookToPyTests(unittest.TestCase):
-    pyGenerator = PyGenerator()
-    nb = Notebook()
-
-    def test_read_notebook_method(self):
-        self.nb.read_notebook("test.ipynb")
-        assert len(self.nb.cells) > 0
-
-    def test_unavailable_file_loading(self):
-        self.assertRaises(IOError, self.nb.read_notebook, "")
-
-    def test_file_path_construction(self):
-        output_path = self.pyGenerator.construct_output_path("test.ipynb");
-        assert output_path == "test.py"
-
     def test_cell_object(self):
-        test_dict = {"cell_type":"code", "source":"lkjashdkjahfslkdjlhfas"}
-        cell = Cell(test_dict)
-        assert cell.cell_type == "code" and cell.source == "lkjashdkjahfslkdjlhfas"
+        self.assertRaises(TypeError, Cell, "")
 
-    def test_empty_cel(self):
-        test_dict = {}
-        self.assertRaises(KeyError, Cell, test_dict)
+    def test_cell_object_init_source(self):
+        cell = Cell({'cell_type': 'code', 'source': ['a', 'b']})
+        self.assertListEqual(cell.source, ['a', 'b'])
 
-    def test_read_py(self):
-        self.nb = Notebook()
-        with open("test.py", 'r') as input:
-            self.nb.read_cells_from_py(input)
-        test_nb = Notebook()
-        test_nb.read_notebook("test.ipynb")
-        assert len(self.nb.cells) == len(test_nb.cells)
-        for i in range(len(self.nb.cells)):
-            assert self.nb.cells[i].cell_type == test_nb.cells[i].cell_type
+    def test_cell_object_init_cell_type(self):
+        cell = Cell({'cell_type': 'code', 'source': ['a', 'b']})
+        self.assertEquals(cell.cell_type, 'code')
 
+    def test_cell_object_init_missing_celltype(self):
+        self.assertRaises(KeyError, Cell, {'source': ['a', 'b']})
+
+    def test_cell_object_init_missing_source(self):
+        self.assertRaises(KeyError, Cell, {'cell_type': 'code'})
+
+    def test_cell_object_to_dict_method(self):
+        cell = Cell({'cell_type': 'code', 'source': ['a', 'b']})
+        self.assertDictEqual(cell.to_dict(), {'cell_type': 'code', 'source': ['a', 'b']})
+
+    def test_cell_object_to_generate_output_method(self):
+        cell = Cell({'cell_type': 'code', 'source': ['a', 'b']})
+        assert 'codecell' in cell.generate_field_output()
+        # TODO: Maybe it needs a better test more about it when reread is implemented
+
+    def test_notebook_object(self):
+        nb = Notebook()
+        self.assertIsInstance(nb, Notebook)
+
+    def test_notebook_read_ipynb_file(self):
+        nb = Notebook()
+        nb.read_notebook("test.ipynb")
+        self.assertNotEqual(nb.notebook_format, None)
+
+    def test_notebook_read_ipynb_file_without_cells(self):
+        nb = Notebook()
+        self.assertRaises(ValueError, nb.read_notebook, "test2.ipynb")
+
+    def test_notebook_read_ipynb_file_cell_loading(self):
+        nb = Notebook()
+        nb.read_notebook("test.ipynb")
+        self.assertGreater(len(nb.cells), 0)
+
+    def test_notebook_read_ipynb_file_cell_type(self):
+        nb = Notebook()
+        nb.read_notebook("test.ipynb")
+        self.assertIsInstance( nb.cells[0], Cell)
+
+    def test_notebook_create_initial_output_no_nbformat(self):
+        nb = Notebook()
+        self.assertRaises(IOError, nb.create_initial_output, ['', "if '<nmat>' in lines[1]:"])
+
+    def test_notebook_read_ipynb_file_nbformat(self):
+        nb = Notebook()
+        nb.create_initial_output(open("test.py", 'r').readlines())
+        self.assertEquals(nb.notebook_format, 4)
 
 
 if __name__ == '__main__':

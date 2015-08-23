@@ -1,7 +1,7 @@
 import os
 import fnmatch
 from Notebook import Notebook
-from Formater import ToPy,ToNotebook
+from Formater import ToNotebook
 
 
 class NbGenerator(object):
@@ -15,7 +15,7 @@ class NbGenerator(object):
         output_file_path = self.construct_output_path_for_py(input_file_path)
         if not os.path.exists(output_file_path) or overwrite:
             nb = Notebook()
-            nb.read_cells_from_py(open(input_file_path,'r'))
+            nb.read_py(input_file_path)
             fm = ToNotebook()
             fm.output(nb, output_file_path, dry_run)
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
                                        '(This will overwrite default.)')
     parser.add_argument('--dry-run', action='store_true', help='Only prints what would happen', default=False)
     args = parser.parse_args()
-    ng= NbGenerator()
+    ng = NbGenerator()
 
     if args.file is not None:
         ng.convert_py_to_notebook(args.file, overwrite=args.overwrite, dry_run=args.dry_run)

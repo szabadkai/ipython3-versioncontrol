@@ -14,8 +14,7 @@ class Formater():
 
 class ToNotebook(Formater):
     def output(self, notebook, out_path, dry_run=False):
-        output =
-        output['cells'] = notebook.cells_to_dict()
+        output = notebook.to_dict()
         if not dry_run:
             self.write_py_data_to_notebook(output, out_path)
         print "Created Ipython Jupyter notebook file: {}".format(out_path)
@@ -24,14 +23,6 @@ class ToNotebook(Formater):
     def write_py_data_to_notebook(output, out_file_path):
         with open(out_file_path, 'w') as outfile:
             json.dump(output, outfile)
-
-    @staticmethod
-    def create_initial_output(notebook):
-        assert isinstance(notebook, Notebook)
-        return {'metadata': notebook.metadata,
-                  'nbformat': notebook.nbformat,
-                  'nbformat_minor': notebook.nbformat_minor}
-
 
 class ToPy(Formater):
     def output(self, notebook, out_path):

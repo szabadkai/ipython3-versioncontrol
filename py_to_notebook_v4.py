@@ -77,7 +77,7 @@ def build_notebook_cells(lines):
             current_cell = 'markdown'
         elif '<codecell>' in line:
             cell = {'cell_type': 'code',
-                    'execution_count': execution_count,
+                   'execution_count': execution_count,
                     'metadata': {'collapsed': False},
                     'outputs': []}
             source = []
