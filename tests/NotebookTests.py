@@ -35,31 +35,31 @@ class NotebookTests(unittest.TestCase):
 
     def test_notebook_read_ipynb_file(self):
         nb = Notebook()
-        nb.read_notebook("test.ipynb")
+        nb.read_notebook("tests/test.ipynb")
         self.assertNotEqual(nb.notebook_format, None)
 
     def test_notebook_read_ipynb_file_without_cells(self):
         nb = Notebook()
-        self.assertRaises(ValueError, nb.read_notebook, "test2.ipynb")
+        self.assertRaises(ValueError, nb.read_notebook, "tests/test2.ipynb")
 
     def test_notebook_read_ipynb_file_cell_loading(self):
         nb = Notebook()
-        nb.read_notebook("test.ipynb")
+        nb.read_notebook("tests/test.ipynb")
         self.assertGreater(len(nb.cells), 0)
 
     def test_notebook_read_py_file_cell_loading(self):
         nb = Notebook()
-        nb.read_py("test.py")
+        nb.read_py("tests/test.py")
         self.assertGreater(len(nb.cells), 0)
 
     def test_notebook_read_ipynb_file_cell_type(self):
         nb = Notebook()
-        nb.read_notebook("test.ipynb")
+        nb.read_notebook("tests/test.ipynb")
         self.assertIsInstance( nb.cells[0], Cell)
 
     def test_notebook_read_py_as_notebook_error(self):
         nb = Notebook()
-        self.assertRaises(ValueError,  nb.read_notebook, "test.py")
+        self.assertRaises(ValueError,  nb.read_notebook, "tests/test.py")
 
     def test_notebook_add_descriptive_data_no_nbformat(self):
         nb = Notebook()
@@ -67,7 +67,7 @@ class NotebookTests(unittest.TestCase):
 
     def test_notebook_read_ipynb_file_nbformat(self):
         nb = Notebook()
-        nb.add_descriptive_data(open("test.py", 'r').readlines())
+        nb.add_descriptive_data(open("tests/test.py", 'r').readlines())
         self.assertEquals(nb.notebook_format, 4)
 
     def test_notebook_to_dict_method(self):
@@ -77,9 +77,9 @@ class NotebookTests(unittest.TestCase):
 
     def test_if_notebooks_are_the_same_from_different_input_types(self):
         nb = Notebook()
-        nb.read_notebook("test.ipynb")
+        nb.read_notebook("tests/test.ipynb")
         nb2 = Notebook()
-        nb2.read_py("test.py")
+        nb2.read_py("tests/test.py")
         assert nb.to_dict() == nb.to_dict()
 
 if __name__ == '__main__':
