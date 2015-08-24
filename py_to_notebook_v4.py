@@ -37,7 +37,8 @@
    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-from app.PyToNotebook import PyToNotebook
+from app.NotebookConverter import NotebookConverter
+from app.Formater import ToNotebook
 
 if __name__ == '__main__':
     import argparse
@@ -48,9 +49,10 @@ if __name__ == '__main__':
                                        '(This will overwrite default.)')
     parser.add_argument('--dry-run', action='store_true', help='Only prints what would happen', default=False)
     args = parser.parse_args()
-    py2nb = PyToNotebook()
+    py2nb = NotebookConverter()
+    fm = ToNotebook()
 
     if args.file is not None:
-        py2nb.convert_py_to_notebook(args.file, overwrite=args.overwrite, dry_run=args.dry_run)
+        py2nb.convert(args.file, fm, overwrite=args.overwrite, dry_run=args.dry_run)
     else:
-        py2nb.convert_all_py_to_notebook(directory='.', overwrite=args.overwrite, dry_run=args.dry_run)
+        py2nb.convert_all('.', fm, overwrite=args.overwrite, dry_run=args.dry_run)

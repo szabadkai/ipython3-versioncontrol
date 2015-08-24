@@ -45,8 +45,9 @@
    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
+from app.Formater import ToPy
+from app.NotebookConverter import NotebookConverter
 
-from app.NotebookToPy import NotebookToPy
 
 if __name__ == '__main__':
     import argparse
@@ -56,9 +57,9 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--file', help='Specify an Ipython notebook if you only want to convert one. '
                                              '(This will overwrite default.)')
     args = parser.parse_args()
-    nb2py = NotebookToPy()
-
+    nb2py = NotebookConverter()
+    fm = ToPy()
     if args.file is not None:
-        nb2py.convert_notebook_to_py(args.file, overwrite=args.overwrite)
+        nb2py.convert(args.file, fm, overwrite=args.overwrite)
     else:
-        nb2py.convert_all_notebook_to_py(directory='.', overwrite=args.overwrite)
+        nb2py.convert_all('.', fm, False, overwrite=args.overwrite)

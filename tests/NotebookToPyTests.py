@@ -1,5 +1,5 @@
 import unittest
-from app.NotebookToPy import NotebookToPy
+from app.NotebookConverter import NotebookToPy
 
 
 class NotebookToPyTests(unittest.TestCase):
