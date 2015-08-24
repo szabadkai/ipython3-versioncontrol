@@ -53,6 +53,6 @@ if __name__ == '__main__':
     fm = ToNotebook()
 
     if args.file is not None:
-        py2nb.convert(args.file, fm, overwrite=args.overwrite, dry_run=args.dry_run)
+        py2nb.convert(args.file, ToNotebook(), overwrite=args.overwrite, dry_run=args.dry_run)
     else:
-        py2nb.convert_all('.', fm, overwrite=args.overwrite, dry_run=args.dry_run)
+        py2nb.convert_all('.', ToNotebook(), overwrite=args.overwrite, dry_run=args.dry_run)
