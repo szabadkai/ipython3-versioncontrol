@@ -24,19 +24,3 @@ class PyToNotebook(object):
         input_headless, ext = os.path.splitext(input_path)
         return input_headless + ".ipynb"
 
-
-if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('-w', '--overwrite', action='store_true', help='Overwrite existing py files', default=False)
-    parser.add_argument('-f', '--file', help='Specify an Ipython notebook if you only want to convert one. '
-                                       '(This will overwrite default.)')
-    parser.add_argument('--dry-run', action='store_true', help='Only prints what would happen', default=False)
-    args = parser.parse_args()
-    ng = PyToNotebook()
-
-    if args.file is not None:
-        ng.convert_py_to_notebook(args.file, overwrite=args.overwrite, dry_run=args.dry_run)
-    else:
-        ng.convert_all_py_to_notebook(directory='.', overwrite=args.overwrite, dry_run=args.dry_run)

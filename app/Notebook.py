@@ -16,7 +16,7 @@ class Notebook(object):
         for cell in notebook_data["cells"]:
             self.cells.append(Cell(cell))
 
-    def create_initial_output(self, lines):
+    def add_descriptive_data(self, lines):
         kernelspec = {'display_name': 'Python 2',
                       'language': 'python',
                       'name': 'python2'}
@@ -75,7 +75,7 @@ class Notebook(object):
         last_cell = False
         outputcells = []
         with open(path_to_file, 'r') as lines:
-            self.create_initial_output(lines.readlines())
+            self.add_descriptive_data(lines.readlines())
             lines.seek(0)
             for line in lines:
                 if skip_one_line:
@@ -100,6 +100,7 @@ class Notebook(object):
 
             last_cell = True
             outputcells = close_cell(current_cell)
+
             for cell in outputcells:
                 self.cells.append(Cell(cell))
 

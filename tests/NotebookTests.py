@@ -61,18 +61,18 @@ class NotebookTests(unittest.TestCase):
         nb = Notebook()
         self.assertRaises(ValueError,  nb.read_notebook, "test.py")
 
-    def test_notebook_create_initial_output_no_nbformat(self):
+    def test_notebook_add_descriptive_data_no_nbformat(self):
         nb = Notebook()
-        self.assertRaises(IOError, nb.create_initial_output, ['', "if '<nmat>' in lines[1]:"])
+        self.assertRaises(IOError, nb.add_descriptive_data, ['', "if '<nmat>' in lines[1]:"])
 
     def test_notebook_read_ipynb_file_nbformat(self):
         nb = Notebook()
-        nb.create_initial_output(open("test.py", 'r').readlines())
+        nb.add_descriptive_data(open("test.py", 'r').readlines())
         self.assertEquals(nb.notebook_format, 4)
 
     def test_notebook_to_dict_method(self):
         nb = Notebook()
-        nb.create_initial_output(['', "# <nbformat>4</nbformat>"])
+        nb.add_descriptive_data(['', "# <nbformat>4</nbformat>"])
         self.assertEquals(nb.to_dict()["nbformat"], 4)
 
     def test_if_notebooks_are_the_same_from_different_input_types(self):
