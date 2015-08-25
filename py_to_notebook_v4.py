@@ -46,13 +46,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('-w', '--overwrite', action='store_true', help='Overwrite existing py files', default=False)
     parser.add_argument('-f', '--file', help='Specify an Ipython notebook if you only want to convert one. '
-                                       '(This will overwrite default.)')
+                                             '(This will overwrite default.)')
     parser.add_argument('--dry-run', action='store_true', help='Only prints what would happen', default=False)
     args = parser.parse_args()
     py2nb = NotebookConverter()
     fm = ToNotebook()
 
     if args.file is not None:
-        py2nb.convert(args.file, ToNotebook(), overwrite=args.overwrite, dry_run=args.dry_run)
+        py2nb.convert(args.file, ToNotebook(overwrite=args.overwrite, dry_run=args.dry_run))
     else:
-        py2nb.convert_all('.', ToNotebook(), overwrite=args.overwrite, dry_run=args.dry_run)
+        py2nb.convert_all('.', ToNotebook(overwrite=args.overwrite, dry_run=args.dry_run))
