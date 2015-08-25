@@ -145,7 +145,7 @@ class Cell(object):
             if self.cell_type == "code":
                 output += item
             else:
-                output += "#" + item
+                output += "# " + item
         return output + "\n"
 
     def to_dict(self):
