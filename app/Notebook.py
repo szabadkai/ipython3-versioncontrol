@@ -10,9 +10,9 @@ class Notebook(object):
 
     def read(self, path_to_file):
         input_headless, ext = os.path.splitext(path_to_file)
-        if ext == "ipynb":
+        if ext == ".ipynb":
             self.read_notebook(path_to_file)
-        elif ext == "py":
+        elif ext == ".py":
             self.read_py(path_to_file)
 
     def read_notebook(self, path_to_file):

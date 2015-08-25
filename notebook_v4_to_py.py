@@ -58,7 +58,9 @@ if __name__ == '__main__':
                                              '(This will overwrite default.)')
     args = parser.parse_args()
     nb2py = NotebookConverter()
+
+    overwrite=not args.overwrite
     if args.file is not None:
-        nb2py.convert(args.file, ToPy(overwrite=args.overwrite, dry_run=args.dry_run))
+        nb2py.convert(args.file, ToPy(args.file, overwrite))
     else:
-        nb2py.convert_all('.', ToPy(overwrite=args.overwrite, dry_run=args.dry_run))
+        nb2py.convert_all('.', ToPy(overwrite))
