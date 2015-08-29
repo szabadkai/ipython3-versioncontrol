@@ -12,7 +12,7 @@ class NotebookTests(unittest.TestCase):
 
     def test_cell_object_init_cell_type(self):
         cell = Cell({'cell_type': 'code', 'source': ['a', 'b']})
-        self.assertEquals(cell.cell_type, 'code')
+        self.assertEquals(cell.type, 'code')
 
     def test_cell_object_init_missing_celltype(self):
         self.assertRaises(KeyError, Cell, {'source': ['a', 'b']})

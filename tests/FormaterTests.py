@@ -1,7 +1,6 @@
 import unittest
 import os
-from app.Notebook import Cell, Notebook
-from app.Formater import ToNotebook, ToPy
+from app.Formatter import ToNotebook, ToPy
 
 
 class FormaterTests(unittest.TestCase):

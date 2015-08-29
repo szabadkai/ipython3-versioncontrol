@@ -38,7 +38,7 @@
    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 from app.NotebookConverter import NotebookConverter
-from app.Formater import ToNotebook
+from app.Formatter import ToNotebook
 
 if __name__ == '__main__':
     import argparse
