@@ -4,7 +4,7 @@ from app.Notebook import Cell
 class ReadPy(object):
     current_cell = None
     execution_count = 1
-    outputcells = []
+    _outputcells = []
 
     def read(self, path_to_file):
         skip_one_line = False
@@ -23,19 +23,19 @@ class ReadPy(object):
                 elif self.current_cell.type in ('markdown', 'code'):
                     self.append_line_to_source(line)
             self.close_last_cell()
-            return self.outputcells
+            return self._outputcells
 
     def close_cell(self):
         if self.current_cell.type in ('markdown', 'code'):
             if len(self.current_cell.source) > 1:
                 del self.current_cell.source[-1:]
             self.current_cell.source[-1] = self.current_cell.source[-1].rstrip('\n')
-            self.outputcells.append(self.current_cell)
+            self._outputcells.append(self.current_cell)
 
     def close_last_cell(self):
         if self.current_cell.type in ['markdown', 'code']:
             self.current_cell.source[-1] = self.current_cell.source[-1].rstrip('\n')
-            self.outputcells.append(self.current_cell)
+            self._outputcells.append(self.current_cell)
 
     def open_cell(self, line, execution_count):
         if '<markdowncell>' in line:

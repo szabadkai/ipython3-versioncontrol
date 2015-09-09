@@ -41,9 +41,6 @@ class ToNotebook(Formater):
 
 
 class ToPy(Formater):
-    dry_run = None
-    overwrite = None
-
     def __init__(self, overwrite=False, dry_run=False,):
         self.overwrite = overwrite
         self.dry_run = dry_run

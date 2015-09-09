@@ -80,7 +80,7 @@ class NotebookTests(unittest.TestCase):
         nb.read_notebook("tests/test.ipynb")
         nb2 = Notebook()
         nb2.read_py("tests/test.py")
-        assert nb.to_dict() == nb.to_dict()
+        self.assertEqual(nb.to_dict(), nb.to_dict())
 
 if __name__ == '__main__':
     unittest.main()
